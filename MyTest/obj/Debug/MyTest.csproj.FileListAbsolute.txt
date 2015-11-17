@@ -1,0 +1,19 @@
+C:\Users\limotao\Documents\Visual Studio 2013\Projects\MyTest\MyTest\bin\Debug\MyTest.exe.config
+D:\limotao\demo\MyTest\MyTest\bin\Debug\MyTest.exe.config
+D:\limotao\demo\MyTest\MyTest\bin\Debug\MyTest.exe
+D:\limotao\demo\MyTest\MyTest\bin\Debug\MyTest.pdb
+D:\limotao\demo\MyTest\MyTest\bin\Debug\Google.Protobuf.dll
+D:\limotao\demo\MyTest\MyTest\bin\Debug\Google.Protobuf.xml
+D:\limotao\demo\MyTest\MyTest\obj\Debug\MyTest.csprojResolveAssemblyReference.cache
+D:\limotao\demo\MyTest\MyTest\obj\Debug\MyTest.exe
+D:\limotao\demo\MyTest\MyTest\obj\Debug\MyTest.pdb
+C:\Users\limotao\Documents\Projects\MyTest\MyTest\bin\Debug\MyTest.exe.config
+C:\Users\limotao\Documents\Projects\MyTest\MyTest\obj\Debug\MyTest.exe
+C:\Users\limotao\Documents\Projects\MyTest\MyTest\obj\Debug\MyTest.pdb
+C:\Users\limotao\Documents\Projects\MyTest\MyTest\bin\Debug\MyTest.exe
+C:\Users\limotao\Documents\Projects\MyTest\MyTest\bin\Debug\MyTest.pdb
+C:\Users\limotao\Documents\Projects\MyTest\MyTest\bin\Debug\Google.Protobuf.dll
+C:\Users\limotao\Documents\Projects\MyTest\MyTest\bin\Debug\WebSocket4Net.dll
+C:\Users\limotao\Documents\Projects\MyTest\MyTest\bin\Debug\Google.Protobuf.xml
+C:\Users\limotao\Documents\Projects\MyTest\MyTest\obj\Debug\MyTest.csprojResolveAssemblyReference.cache
+D:\limotao\demo\MyTest\MyTest\bin\Debug\WebSocket4Net.dll

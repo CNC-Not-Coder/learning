@@ -1,0 +1,16 @@
+
+syntax="proto3";
+option csharp_namespace = "NetMessage";
+message PB_UserInfo
+{
+	int64 Guid = 1;
+	string NickName = 2;
+	int32 Level = 3;
+	message PB_EquipInfo
+	{
+		int64 Guid = 1;
+		int32 ConfigId = 2;
+		int32 Level = 3;
+	}
+	repeated PB_EquipInfo EquipData = 4;
+};
