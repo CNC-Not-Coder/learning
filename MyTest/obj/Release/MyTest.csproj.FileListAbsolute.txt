@@ -1,8 +1,0 @@
-C:\Users\limotao\Documents\Projects\MyTest\MyTest\bin\Release\MyTest.exe.config
-C:\Users\limotao\Documents\Projects\MyTest\MyTest\bin\Release\MyTest.exe
-C:\Users\limotao\Documents\Projects\MyTest\MyTest\bin\Release\MyTest.pdb
-C:\Users\limotao\Documents\Projects\MyTest\MyTest\bin\Release\Google.Protobuf.dll
-C:\Users\limotao\Documents\Projects\MyTest\MyTest\bin\Release\WebSocket4Net.dll
-C:\Users\limotao\Documents\Projects\MyTest\MyTest\bin\Release\Google.Protobuf.xml
-C:\Users\limotao\Documents\Projects\MyTest\MyTest\obj\Release\MyTest.exe
-C:\Users\limotao\Documents\Projects\MyTest\MyTest\obj\Release\MyTest.pdb
