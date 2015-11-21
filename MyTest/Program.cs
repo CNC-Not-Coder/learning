@@ -13,6 +13,7 @@ namespace MyTest
         static WebSocket4Net.WebSocket mSocketClient = null;
         static void Main(string[] args)
         {
+            InitDataTables();
 
             InitNetWork();
 
@@ -75,26 +76,38 @@ namespace MyTest
 
         private static void InitDataTables()
         {
-            FileStream stream = File.Open("", FileMode.Open, FileAccess.Read);
+            FileStream stream = File.Open("../../Data/DataTables/weapons.xls", FileMode.Open, FileAccess.Read);
 
             //1. Reading from a binary Excel file ('97-2003 format; *.xls)
-            //IExcelDataReader excelReader = ExcelReaderFactory.CreateBinaryReader(stream);
+            IExcelDataReader excelReader = ExcelReaderFactory.CreateBinaryReader(stream);
 
             //2. Reading from a OpenXml Excel file (2007 format; *.xlsx)
-            IExcelDataReader excelReader = ExcelReaderFactory.CreateOpenXmlReader(stream);
+            //IExcelDataReader excelReader = ExcelReaderFactory.CreateOpenXmlReader(stream);
 
             //3. DataSet - The result of each spreadsheet will be created in the result.Tables
             //DataSet result = excelReader.AsDataSet();
 
             //4. DataSet - Create column names from first row
-            excelReader.IsFirstRowAsColumnNames = true;
+            //excelReader.IsFirstRowAsColumnNames = true;
             DataSet result = excelReader.AsDataSet();
 
-            //5. Data Reader methods
-            while (excelReader.Read())
+            DataTable table = result.Tables[0];
+            int row = table.Rows.Count;
+            int col = table.Columns.Count;
+            for (int i = 0; i < row; i++)
             {
-                //excelReader.GetInt32(0);
+                for (int j = 0; j < col; j++)
+                {
+                    Console.Write(table.Rows[i][j] + "\t");
+                }
+                Console.Write("\n");
             }
+
+            //5. Data Reader methods
+            //while (excelReader.Read())
+            //{
+                //excelReader.GetInt32(0);
+            //}
 
             //6. Free resources (IExcelDataReader is IDisposable)
             excelReader.Close();
