@@ -15,6 +15,8 @@ namespace MyTest
         {
             InitDataTables();
 
+            InitDataFromTxt();
+
             InitNetWork();
 
             var info = new NetMessage.PB_UserInfo();
@@ -111,6 +113,25 @@ namespace MyTest
 
             //6. Free resources (IExcelDataReader is IDisposable)
             excelReader.Close();
+        }
+
+        //read data from txt file
+        public static void InitDataFromTxt()
+        {
+            StreamReader reader = File.OpenText("../../Data/DataTables/weapons.txt");
+            while(true)
+            {
+                string line = reader.ReadLine();
+                if (string.IsNullOrEmpty(line))
+                    break;
+                string[] cols = line.Split(new char[] { '\t' }, StringSplitOptions.None);
+                int len = cols.Length;
+                for (int i = 0; i < len; i++)
+                {
+                    Console.Write(cols[i] + "\t");
+                }
+                Console.Write("\n");
+            }
         }
     }
 }
