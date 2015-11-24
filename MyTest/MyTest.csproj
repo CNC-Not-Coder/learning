@@ -50,9 +50,12 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataProvider.cs" />
+    <Compile Include="MyDataTable.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProtoBuf\generate\MessageDefine.cs" />
+    <Compile Include="TemplateData.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

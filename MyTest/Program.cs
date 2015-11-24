@@ -13,6 +13,9 @@ namespace MyTest
         static WebSocket4Net.WebSocket mSocketClient = null;
         static void Main(string[] args)
         {
+            DataProvider.Instance.Init(delegate(string path) { return ""; });
+            TemplateUnit unit = TemplateData.Instance.GetDataById(0);
+
             InitDataTables();
 
             InitDataFromTxt();
