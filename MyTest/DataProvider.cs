@@ -40,6 +40,35 @@ namespace MyTest
     }
     public class DataParser
     {
+        public static T Parse<T>(MyDataRow row, string colName, T defaultVal)
+        {
+            T val = defaultVal;
+            if (row == null || string.IsNullOrEmpty(colName))
+                return val;
+
+            try
+            {
+                if (!string.IsNullOrEmpty(row[colName]))
+                    val = (T)Convert.ChangeType(row[colName], typeof(T));
+            }
+            catch (Exception e)
+            {
+                DataProvider.Instance.Log("DataParser.Parse<{0}> at Table: {1}({2}, {3}), error: {4}", typeof(T).ToString(), row.Table.TableName, row.RowId, colName, e.Message);
+            }
+            return val;
+        }
+        public static List<T> ParseList<T>(MyDataRow row, string prefix, T defaultVal)
+        {
+            List<T> results = new List<T>();
+            //下标从0开始,最大到19
+            int maxIndex = 20;
+            for (int i = 0; i < maxIndex; i++)
+            {
+                string colName = string.Format("{0}{1}", prefix, i);
+                results.Add(Parse<T>(row, colName, defaultVal));
+            }
+            return results;
+        }
         public static T Parse<T>(MyDataRow row, int col, T defaultVal)
         {
             T val = defaultVal;
@@ -53,7 +82,7 @@ namespace MyTest
             }
             catch(Exception e)
             {
-                DataProvider.Instance.Log("DataParser.Parse<{0}> at Table: {1}({2}, {3}), error: {4}", typeof(T).ToString(), row.TableName, row.RowId, col, e.Message);
+                DataProvider.Instance.Log("DataParser.Parse<{0}> at Table: {1}({2}, {3}), error: {4}", typeof(T).ToString(), row.Table.TableName, row.RowId, col, e.Message);
             }
             return val;
         }

@@ -10,10 +10,12 @@ namespace MyTest
     {
         public int Id;
         public int[] Skills;
+        public List<int> Items;
         public void Load(MyDataRow row)
         {
             Id = DataParser.Parse<int>(row, 0, -1);
             Skills = DataParser.ParseArry<int>(row, 1, 4, -1);
+            Items = DataParser.ParseList<int>(row, "Item", -1);
         }
         public int GetId()
         {
