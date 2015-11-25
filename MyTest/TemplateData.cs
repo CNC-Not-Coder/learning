@@ -17,7 +17,7 @@ namespace MyTest
         }
         public int GetId()
         {
-            throw new NotImplementedException();
+            return Id;
         }
     }
     public class TemplateData : DataInstance<TemplateUnit> { }

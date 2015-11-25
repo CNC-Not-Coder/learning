@@ -7,6 +7,8 @@ namespace MyTest
 {
     public class MyDataRow
     {
+        public int RowId { get; set; }
+        public string TableName { get; set; }
         private string[] vals = null;
         public MyDataRow(string[] _vals)
         {
@@ -37,13 +39,16 @@ namespace MyTest
     public class MyDataTable
     {
         private List<MyDataRow> mData = new List<MyDataRow>();
-        public MyDataTable(string data)
+        private string mTableName;
+        public MyDataTable(string data, string tableName)
         {
             if (string.IsNullOrEmpty(data))
                 return;
+            mTableName = tableName;
             StringReader reader = new StringReader(data);
             try
             {
+                int rowId = 0;
                 while (true)
                 {
                     string line = reader.ReadLine();
@@ -55,7 +60,10 @@ namespace MyTest
                     if (fields == null) break;
 
                     MyDataRow row = new MyDataRow(fields);
+                    row.RowId = rowId;
+                    row.TableName = mTableName;
                     mData.Add(row);
+                    rowId++;
                 }
             }
             catch(Exception e)

@@ -53,7 +53,7 @@ namespace MyTest
             }
             catch(Exception e)
             {
-                DataProvider.Instance.Log("DataParser.Parse<{0}>, errors: {1}", typeof(T).ToString(), e.Message);
+                DataProvider.Instance.Log("DataParser.Parse<{0}> at Table: {1}({2}, {3}), error: {4}", typeof(T).ToString(), row.TableName, row.RowId, col, e.Message);
             }
             return val;
         }
@@ -99,7 +99,7 @@ namespace MyTest
             string data = readAllTextHandler(relativePath);
             if (string.IsNullOrEmpty(data))
                 return;
-            MyDataTable table = new MyDataTable(data);
+            MyDataTable table = new MyDataTable(data, relativePath);
             container.Load(table);
         }
         public void Log(string format, params object[] p)

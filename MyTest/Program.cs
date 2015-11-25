@@ -13,8 +13,6 @@ namespace MyTest
         static WebSocket4Net.WebSocket mSocketClient = null;
         static void Main(string[] args)
         {
-            DataProvider.Instance.Init(delegate(string path) { return ""; });
-            TemplateUnit unit = TemplateData.Instance.GetDataById(0);
 
             InitDataTables();
 
@@ -135,6 +133,26 @@ namespace MyTest
                 }
                 Console.Write("\n");
             }
+        }
+
+        public static void LoadTables()
+        {
+            //加载并解析表格
+            DataProvider.Instance.Init(delegate(string path) { return ""; });
+            TemplateUnit unit = TemplateData.Instance.GetDataById(0);
+        }
+
+        public static void GenerateTable()
+        {
+            //将excel表格转换成txt，然后生成对应的cs文件
+
+            HeaderToCS.Instance.TemplateFile = "../../Data/DataTables/template.cs";//模版文件
+
+            ExcelToText.Instance.AddTask("../../Data/DataTables/weapons.xls", "../../Data/DataTables/weapons.txt", HeaderToCS.Instance.GenerateCS);
+
+            ExcelToText.Instance.Start();
+
+            ExcelToText.Instance.WaitingFinish();
         }
     }
 }
