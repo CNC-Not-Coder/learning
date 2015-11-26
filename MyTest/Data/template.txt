@@ -1,0 +1,31 @@
+﻿///
+/// 本文件由工具自动生成，请不要手动修改！
+///
+using System;
+using System.Collections.Generic;
+
+namespace MyTest
+{
+    @{RepeatTable-Beg}
+    public class @{TableName} : IDataUnit
+    {
+        @{Declares}
+        public void Load(MyDataRow row)
+        {
+            @{Parsers}
+        }
+        public int GetId()
+        {
+            return @{FirstCol};
+        }
+    }
+    public class @{TableProviderName} : DataInstance<@{TableName}> { }
+    @{RepeatTable-End}
+    public partial class DataProvider
+    {
+        private void LoadAllData()
+        {
+            @{Loaders}
+        }
+    }
+}

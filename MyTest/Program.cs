@@ -13,6 +13,7 @@ namespace MyTest
         static WebSocket4Net.WebSocket mSocketClient = null;
         static void Main(string[] args)
         {
+            GenerateTable();
 
             InitDataTables();
 
@@ -91,7 +92,7 @@ namespace MyTest
             //DataSet result = excelReader.AsDataSet();
 
             //4. DataSet - Create column names from first row
-            //excelReader.IsFirstRowAsColumnNames = true;
+            excelReader.IsFirstRowAsColumnNames = true;
             DataSet result = excelReader.AsDataSet();
 
             DataTable table = result.Tables[0];
@@ -146,9 +147,13 @@ namespace MyTest
         {
             //将excel表格转换成txt，然后生成对应的cs文件
 
-            HeaderToCS.Instance.TemplateFile = "../../Data/DataTables/template.cs";//模版文件
+            HeaderToCS.Instance.TemplateFile = "../../Data/template.txt";//模版文件
+            HeaderToCS.Instance.DestRootPath = "../../Data/";
 
-            ExcelToText.Instance.AddTask("../../Data/DataTables/weapons.xls", "../../Data/DataTables/weapons.txt", HeaderToCS.Instance.GenerateCS);
+            ExcelToText.Instance.SrcRootPath = "../../Data/DataTables/";
+            ExcelToText.Instance.DestRootPath = "../../Data/DataTables/";
+
+            ExcelToText.Instance.AddTask("weapons.xls", "weapons.txt", HeaderToCS.Instance.GenerateCS);
 
             ExcelToText.Instance.Start();
 

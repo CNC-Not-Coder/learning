@@ -65,6 +65,9 @@ namespace MyTest
             for (int i = 0; i < maxIndex; i++)
             {
                 string colName = string.Format("{0}{1}", prefix, i);
+                int index = row.Table.GetHeaderIndexByColName(colName);
+                if (index < 0)
+                    break;
                 results.Add(Parse<T>(row, colName, defaultVal));
             }
             return results;
@@ -123,9 +126,7 @@ namespace MyTest
         }
         private void LoadData<T>(DataInstance<T> container, string relativePath) where T : IDataUnit, new()
         {
-            if (readAllTextHandler == null)
-                return;
-            string data = readAllTextHandler(relativePath);
+            string data = ReadAllText(relativePath);
             if (string.IsNullOrEmpty(data))
                 return;
             MyDataTable table = new MyDataTable(data, relativePath);
@@ -135,6 +136,23 @@ namespace MyTest
         {
             if (logHandler != null)
                 logHandler(format, p);
+        }
+        public string ReadAllText(string relativePath)
+        {
+            try
+            {
+                if (readAllTextHandler == null)
+                    return string.Empty;
+                string data = readAllTextHandler(relativePath);
+                if (string.IsNullOrEmpty(data))
+                    return string.Empty;
+                return data;
+            }
+            catch(Exception e)
+            {
+                Log("Read All Text ERROR : {0}", e.Message);
+            }
+            return string.Empty;
         }
     }
 }

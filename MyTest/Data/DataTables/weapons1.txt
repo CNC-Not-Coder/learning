@@ -1,0 +1,4 @@
+Id	Desc	Name	Hp	Mp
+INT	STRING	STRING	INT	INT
+1	hh	hello	1	1
+2	hh	hello2	2	2
