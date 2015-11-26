@@ -13,13 +13,15 @@ namespace MyTest
         static WebSocket4Net.WebSocket mSocketClient = null;
         static void Main(string[] args)
         {
-            GenerateTable();
+            //GenerateTable();
 
             //InitDataTables();
 
             InitDataFromTxt();
 
             InitNetWork();
+
+            LoadTables();
 
             var info = new NetMessage.PB_UserInfo();
             info.Guid = 1000L;
@@ -144,8 +146,18 @@ namespace MyTest
         public static void LoadTables()
         {
             //加载并解析表格
-            DataProvider.Instance.Init(delegate(string path) { return ""; });
-            TemplateUnit unit = TemplateData.Instance.GetDataById(0);
+            DataProvider.Instance.Init(delegate(string path) 
+            {
+                string text = File.ReadAllText(Path.Combine("../../Data/DataTables/", path));
+                return text;
+            });
+            Equip e = EquipData.Instance.GetDataById(2);
+            if(e != null)
+            {
+                Console.WriteLine(e.ItemList[2]);
+            }
+            weapons w = weaponsData.Instance.GetDataById(2);
+            Console.WriteLine(w.ModelList[2]);
         }
 
         public static void GenerateTable()

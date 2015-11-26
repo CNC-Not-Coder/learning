@@ -80,6 +80,7 @@ namespace MyTest
                     if (rowId == 0)
                     {//表头
                         mHeader.AddRange(fields);
+                        rowId++;
                     }
                     else
                     {//直接读数据，这里没有数据类型

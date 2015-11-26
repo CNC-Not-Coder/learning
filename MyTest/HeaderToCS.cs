@@ -50,11 +50,11 @@ namespace MyTest
                     strDeclare = string.Format("public {0} {1};", typeOfField, colName);
                     strParser = string.Format("{0} = DataParser.Parse<{1}>(row, \"{2}\", {3});", colName, typeOfField, colName, GetDefaultVal(typeOfField));
                 }
-                propertyDeclares += strDeclare + "\r\n" ;
-                propertyParsers += strParser + "\r\n";
+                propertyDeclares += strDeclare + "\r\n\t\t" ;
+                propertyParsers += strParser + "\r\n\t\t\t";
             }
             string tableName = Path.GetFileNameWithoutExtension(tableRelativePath);
-            string strLoader = string.Format("LoadData({0}Data.Instance, \"{1}\");", tableName, tableRelativePath);
+            string strLoader = string.Format("LoadData({0}Data.Instance, \"{1}\");\r\n\t\t\t", tableName, tableRelativePath);
 
             OutputToCSBuffer(tableName, firstCol, propertyDeclares, propertyParsers, strLoader);
         }
@@ -116,7 +116,7 @@ namespace MyTest
             tableTemplate = tableTemplate.Replace("@{TableProviderName}", string.Format("{0}Data", tableName));
 
             tableOutput.Append(tableTemplate);
-            loaderOutput.AppendLine(loader);
+            loaderOutput.Append(loader);
             
         }
         public void Flush(string fileName)
