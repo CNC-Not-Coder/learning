@@ -21,12 +21,12 @@ namespace MyTest
         public void Start()
         {//多线程初始化
             thread1 = new Thread(DoTask);
-            thread2 = new Thread(DoTask);
-            thread3 = new Thread(DoTask);
+            //thread2 = new Thread(DoTask);
+            //thread3 = new Thread(DoTask);
 
             thread1.Start();
-            thread2.Start();
-            thread3.Start();
+            //thread2.Start();
+            //thread3.Start();
         }
         public void AddTask(string srcExcel, string destFile,ParseCompleteDelegate callBack )
         {
@@ -39,8 +39,8 @@ namespace MyTest
         public void WaitingFinish()
         {
             thread1.Join();
-            thread2.Join();
-            thread3.Join();
+            //thread2.Join();
+            //thread3.Join();
         }
         private void DoTask()
         {
@@ -67,7 +67,7 @@ namespace MyTest
                 }
                 catch(Exception e)
                 {
-                    Console.WriteLine(e.Message);
+                    Console.WriteLine("Exception:{0}, Stack:{1}", e.Message, e.StackTrace);
                     break;
                 }
             }

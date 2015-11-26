@@ -15,7 +15,7 @@ namespace MyTest
         {
             GenerateTable();
 
-            InitDataTables();
+            //InitDataTables();
 
             InitDataFromTxt();
 
@@ -115,6 +115,9 @@ namespace MyTest
 
             //6. Free resources (IExcelDataReader is IDisposable)
             excelReader.Close();
+            excelReader.Dispose();
+            stream.Close();
+            stream.Dispose();
         }
 
         //read data from txt file
@@ -134,6 +137,8 @@ namespace MyTest
                 }
                 Console.Write("\n");
             }
+            reader.Close();
+            reader.Dispose();
         }
 
         public static void LoadTables()
@@ -154,10 +159,13 @@ namespace MyTest
             ExcelToText.Instance.DestRootPath = "../../Data/DataTables/";
 
             ExcelToText.Instance.AddTask("weapons.xls", "weapons.txt", HeaderToCS.Instance.GenerateCS);
+            ExcelToText.Instance.AddTask("Equip.xls", "Equip.txt", HeaderToCS.Instance.GenerateCS);
 
             ExcelToText.Instance.Start();
 
             ExcelToText.Instance.WaitingFinish();
+
+            HeaderToCS.Instance.Flush("AllDataTable.cs");
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace MyTest
@@ -12,8 +13,9 @@ namespace MyTest
         public string DestRootPath { get; set; }
         private List<string> mTableLoads = new List<string>();
         private object _lockOfTableLoads = new object();
-        private string tableOutput = string.Empty;
-        private string loaderOutput = string.Empty;
+
+        private StringBuilder tableOutput = new StringBuilder();
+        private StringBuilder loaderOutput = new StringBuilder();
         public void GenerateCS(string tableRelativePath, List<string> header, List<string> types)
         {
             if (header == null || types == null)
@@ -113,12 +115,24 @@ namespace MyTest
             tableTemplate = tableTemplate.Replace("@{Parsers}", parsers);
             tableTemplate = tableTemplate.Replace("@{TableProviderName}", string.Format("{0}Data", tableName));
 
-            string destPath = Path.Combine(DestRootPath, "AllDataTable.cs");
+            tableOutput.Append(tableTemplate);
+            loaderOutput.AppendLine(loader);
+            
+        }
+        public void Flush(string fileName)
+        {
+            string template = File.ReadAllText(TemplateFile);
+            if (string.IsNullOrEmpty(template))
+                return;
+            Regex regex = new Regex(@"@{RepeatTable-Beg}[\w\W]+@{RepeatTable-End}");
+            string output = regex.Replace(template, tableOutput.ToString());
+            output = output.Replace("@{Loaders}", loaderOutput.ToString());
+            string destPath = Path.Combine(DestRootPath, fileName);
             if (File.Exists(destPath))
                 File.Delete(destPath);
             FileStream stream = File.OpenWrite(destPath);
             StreamWriter writer = new StreamWriter(stream);
-            writer.Write(tableTemplate);
+            writer.Write(output);
             writer.Flush();
             writer.Dispose();
             stream.Close();

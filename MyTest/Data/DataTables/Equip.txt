@@ -1,0 +1,4 @@
+Id	Desc	Name	Hp	Mp	Item0	Item1	Item2
+#INT	STRING	STRING	INT	INT	INT	INT	INT
+1	hh	hello	1	1	1	2	3
+2	hh	hello2	2	2	1	2	3
