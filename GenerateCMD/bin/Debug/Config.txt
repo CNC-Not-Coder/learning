@@ -1,0 +1,7 @@
+Id	Desc	Value
+#INT	STRING	STRING
+1	模版文件路径	../../Data/template.txt
+2	CS文件输出路径	../../Data/
+3	Excel文件输入路径	../../Data/Excel/
+4	Txt文件输出路径	../../Data/DataTables/
+5	CS文件名	DataConfig.cs

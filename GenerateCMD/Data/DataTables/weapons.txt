@@ -1,0 +1,4 @@
+Id	Desc	Name	Hp	Mp	Item0	Item1	Item2	Model0	Model1	Model2
+#INT	STRING	STRING	INT	INT	INT	INT	INT	STRING	STRING	STRING
+1	hh	hello	1	1	1	2	3	qqqq	wwwww	eeee
+2	hh	hello2	2	2	1	2	3	aaaa	sssss	dddd

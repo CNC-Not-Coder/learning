@@ -6,7 +6,7 @@ using System.IO;
 using System.Data;
 using System.Text;
 
-namespace MyTest
+namespace GenerateCMD
 {
     public class ExcelToText
     {
@@ -134,6 +134,11 @@ namespace MyTest
             if(File.Exists(destFile))
             {
                 File.Delete(destFile);
+            }
+            string dir = Path.GetDirectoryName(destFile);
+            if(!Directory.Exists(dir))
+            {
+                Directory.CreateDirectory(dir);
             }
             FileStream output = File.OpenWrite(destFile);
             StreamWriter writer = new StreamWriter(output);
