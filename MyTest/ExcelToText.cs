@@ -16,8 +16,8 @@ namespace MyTest
         private Queue<Tuple<string, string, ParseCompleteDelegate>> mTasks = new Queue<Tuple<string, string, ParseCompleteDelegate>>();
         private object _lock = new object();
         private Thread thread1 = null;
-        private Thread thread2 = null;
-        private Thread thread3 = null;
+        //private Thread thread2 = null;
+        //private Thread thread3 = null;
         public void Start()
         {//多线程初始化
             thread1 = new Thread(DoTask);

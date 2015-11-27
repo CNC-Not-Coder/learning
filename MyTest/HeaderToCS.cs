@@ -16,6 +16,28 @@ namespace MyTest
 
         private StringBuilder tableOutput = new StringBuilder();
         private StringBuilder loaderOutput = new StringBuilder();
+        private string mTemplate = string.Empty;
+        private string mTableTemplate = string.Empty;
+        public void Init()
+        {
+            if (string.IsNullOrEmpty(TemplateFile))
+                return;
+            if (!File.Exists(TemplateFile))
+                return;
+            string template = File.ReadAllText(TemplateFile);
+            if (string.IsNullOrEmpty(template))
+                return;
+            mTemplate = template;
+
+            string begFlag = "@{RepeatTable-Beg}";
+            string endFlag = "@{RepeatTable-End}";
+            int indexBeg = template.IndexOf(begFlag);
+            int indexEnd = template.IndexOf(endFlag);
+            if (indexBeg < 0 || indexEnd < 0 || indexEnd < indexBeg)
+                return;
+            string tableTemplate = template.Substring(indexBeg + begFlag.Length, indexEnd - indexBeg - endFlag.Length);
+            mTableTemplate = tableTemplate;
+        }
         public void GenerateCS(string tableRelativePath, List<string> header, List<string> types)
         {
             if (header == null || types == null)
@@ -94,20 +116,7 @@ namespace MyTest
         }
         private void OutputToCSBuffer(string tableName, string firstColName, string declares, string parsers, string loader)
         {
-            if (string.IsNullOrEmpty(TemplateFile))
-                return;
-            if(!File.Exists(TemplateFile))
-                return;
-            string template = File.ReadAllText(TemplateFile);
-            if (string.IsNullOrEmpty(template))
-                return;
-            string begFlag = "@{RepeatTable-Beg}";
-            string endFlag = "@{RepeatTable-End}";
-            int indexBeg = template.IndexOf(begFlag);
-            int indexEnd = template.IndexOf(endFlag);
-            if (indexBeg < 0 || indexEnd < 0 || indexEnd < indexBeg)
-                return;
-            string tableTemplate = template.Substring(indexBeg + begFlag.Length, indexEnd - indexBeg - endFlag.Length);
+            string tableTemplate = mTableTemplate;
 
             tableTemplate = tableTemplate.Replace("@{TableName}", tableName);
             tableTemplate = tableTemplate.Replace("@{Declares}", declares);
@@ -121,11 +130,8 @@ namespace MyTest
         }
         public void Flush(string fileName)
         {
-            string template = File.ReadAllText(TemplateFile);
-            if (string.IsNullOrEmpty(template))
-                return;
-            Regex regex = new Regex(@"@{RepeatTable-Beg}[\w\W]+@{RepeatTable-End}");
-            string output = regex.Replace(template, tableOutput.ToString());
+            Regex regex = new Regex(@"@{RepeatTable-Beg}(\w|\W)+@{RepeatTable-End}");
+            string output = regex.Replace(mTemplate, tableOutput.ToString());
             output = output.Replace("@{Loaders}", loaderOutput.ToString());
             string destPath = Path.Combine(DestRootPath, fileName);
             if (File.Exists(destPath))

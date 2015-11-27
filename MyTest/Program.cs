@@ -146,13 +146,13 @@ namespace MyTest
         public static void LoadTables()
         {
             //加载并解析表格
-            DataProvider.Instance.Init(delegate(string path) 
+            DataProvider.Instance.Init(delegate(string path)
             {
                 string text = File.ReadAllText(Path.Combine("../../Data/DataTables/", path));
                 return text;
             });
             Equip e = EquipData.Instance.GetDataById(2);
-            if(e != null)
+            if (e != null)
             {
                 Console.WriteLine(e.ItemList[2]);
             }
@@ -166,6 +166,7 @@ namespace MyTest
 
             HeaderToCS.Instance.TemplateFile = "../../Data/template.txt";//模版文件
             HeaderToCS.Instance.DestRootPath = "../../Data/";
+            HeaderToCS.Instance.Init();
 
             ExcelToText.Instance.SrcRootPath = "../../Data/DataTables/";
             ExcelToText.Instance.DestRootPath = "../../Data/DataTables/";
