@@ -1,4 +1,5 @@
 ﻿using Excel;
+using Google.Protobuf;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -23,20 +24,7 @@ namespace MyTest
 
             LoadTables();
 
-            var info = new NetMessage.PB_UserInfo();
-            info.Guid = 1000L;
-            info.Level = 5;
-            info.NickName = "limotao";
-            byte[] data = new byte[info.CalculateSize()];
-            var buff = new Google.Protobuf.CodedOutputStream(data);
-            info.WriteTo(buff);
-            Console.ReadKey();
-            string message = Convert.ToBase64String(data);
-            //mSocketClient.Send(data, 0, data.Length);
-            mSocketClient.Send(message);
-
-            Console.ReadKey();
-            mSocketClient.Close(0, "logout!");
+            TestNetwork();
         }
 
         private static void InitNetWork()
@@ -50,6 +38,36 @@ namespace MyTest
             mSocketClient.MessageReceived += new EventHandler<WebSocket4Net.MessageReceivedEventArgs>(websocket_MessageReceived);
             mSocketClient.DataReceived += new EventHandler<WebSocket4Net.DataReceivedEventArgs>(websocket_DataReceived);
             mSocketClient.Open();
+        }
+
+        private static void TestNetwork()
+        {
+            var info = new NetMessage.PB_UserInfo();
+            info.Guid = 1000L;
+            info.Level = 5;
+            info.NickName = "limotao";
+            byte[] data = new byte[info.CalculateSize()];
+            var buff = new Google.Protobuf.CodedOutputStream(data);
+            info.WriteTo(buff);
+            Console.ReadKey();
+            string message = Convert.ToBase64String(data);
+            //mSocketClient.Send(data, 0, data.Length);
+            mSocketClient.Send(message);
+            //Google.Protobuf.MessageParser<NetMessage.PB_UserInfo>()
+            Console.ReadKey();
+            mSocketClient.Close(0, "logout!");
+        }
+        public void PrintMessage(IMessage message)
+        {
+            var descriptor = message.Descriptor;
+            foreach (var field in descriptor.Fields.InDeclarationOrder())
+            {
+                Console.WriteLine(
+                    "Field {0} ({1}): {2}",
+                    field.FieldNumber,
+                    field.Name,
+                    field.Accessor.GetValue(message));
+            }
         }
 
         private static void websocket_Opened(object sender, EventArgs e)
