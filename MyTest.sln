@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyTest", "MyTest\MyTest.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GenerateCMD", "GenerateCMD\GenerateCMD.csproj", "{0C7A5752-3BFD-474C-923D-B4CA3C1BD84A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CenterApi", "CenterApi\CenterApi.csproj", "{6E097A30-3AA3-4EC1-AFE2-E54BF2CCC887}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{0C7A5752-3BFD-474C-923D-B4CA3C1BD84A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0C7A5752-3BFD-474C-923D-B4CA3C1BD84A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0C7A5752-3BFD-474C-923D-B4CA3C1BD84A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E097A30-3AA3-4EC1-AFE2-E54BF2CCC887}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E097A30-3AA3-4EC1-AFE2-E54BF2CCC887}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E097A30-3AA3-4EC1-AFE2-E54BF2CCC887}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E097A30-3AA3-4EC1-AFE2-E54BF2CCC887}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
