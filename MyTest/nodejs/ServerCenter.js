@@ -71,8 +71,8 @@ var webServer = new webSocket({
 	});
 
 webServer.on("request", function(request){
-	console.log(util.inspect(request.requestedExtensions[0]));
-	var connection = request.accept("nodejs1", request.origin);	
+	//console.log(util.inspect(request.requestedExtensions[0]));
+	var connection = request.accept("servercenter", request.origin);	
 });
 webServer.on("connect", function(connection){
 	NodeMap[connection.protocol] = connection;
@@ -83,6 +83,7 @@ webServer.on("connect", function(connection){
 			connection.sendUTF(msg.utf8Data);
 		else
 			connection.sendBytes(msg.binaryData);
+		connection.send("{\"from\":\"Lobby\", \"data\":\"9999999999\"}");
 	});
 	connection.on("close", function(reasonCode, description){
 		console.log("onclose :" + description);

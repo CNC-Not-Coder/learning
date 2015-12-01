@@ -1,4 +1,5 @@
-﻿using Excel;
+﻿using CenterApi;
+using Excel;
 using Google.Protobuf;
 using System;
 using System.Collections.Generic;
@@ -18,15 +19,23 @@ namespace MyTest
 
             //InitDataTables();
 
-            InitDataFromTxt();
+            //InitDataFromTxt();
 
-            InitNetWork();
+            //InitNetWork();
 
-            LoadTables();
+            //LoadTables();
 
-            TestNetwork();
+            //TestNetwork();
+
+            TestCenterApi();
         }
-
+        private static void TestCenterApi()
+        {
+            CenterMessager.Instance.LogHandler = Console.WriteLine;
+            CenterMessager.Instance.Init("127.0.0.1", 8000, "lobby");
+            Console.ReadKey();
+            CenterMessager.Instance.SendMessage("RoomServer1", "hhhhhhha");
+        }
         private static void InitNetWork()
         {
             var extension = new List<KeyValuePair<string, string>>();

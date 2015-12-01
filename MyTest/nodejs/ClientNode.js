@@ -32,4 +32,4 @@ client.on('connect', function(connection) {
     sendNumber();
 });
 
-client.connect('ws://localhost:8000/', "nodejs1");
+client.connect('ws://localhost:8000/', "servercenter");
