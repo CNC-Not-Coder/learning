@@ -32,9 +32,15 @@ namespace MyTest
         private static void TestCenterApi()
         {
             CenterMessager.Instance.LogHandler = Console.WriteLine;
-            CenterMessager.Instance.Init("127.0.0.1", 8000, "lobby");
+            CenterMessager.Instance.OnMessage = OnMessage;
+            CenterMessager.Instance.Init("127.0.0.1", 8000, "lobby", NodeType.Lobby);
             Console.ReadKey();
-            CenterMessager.Instance.SendMessage("RoomServer1", "hhhhhhha");
+            CenterMessager.Instance.SendMessage("lobby", "hhhhhhha");
+            Console.ReadKey();
+        }
+        private static void OnMessage(NodeType nodeType, string from, string msg)
+        {
+            Console.WriteLine("{0}, {1}, {2}", nodeType, from, msg);
         }
         private static void InitNetWork()
         {
