@@ -29,18 +29,27 @@ namespace MyTest
 
             TestCenterApi();
         }
+        public enum NodeType
+        {
+            Invalid = -1,
+            Lobby = 0,
+            ClientNode = 1,
+            RoomServer = 2,
+        }
         private static void TestCenterApi()
         {
+
             CenterMessager.Instance.LogHandler = Console.WriteLine;
             CenterMessager.Instance.OnMessage = OnMessage;
-            CenterMessager.Instance.Init("127.0.0.1", 8000, "lobby", NodeType.Lobby);
+            CenterMessager.Instance.Init("127.0.0.1", 8000, "lobby", (int)NodeType.Lobby);
             Console.ReadKey();
             CenterMessager.Instance.SendMessage("lobby", "hhhhhhha");
             Console.ReadKey();
         }
-        private static void OnMessage(NodeType nodeType, string from, string msg)
+        private static void OnMessage(int nodeType, string from, string msg)
         {
             Console.WriteLine("{0}, {1}, {2}", nodeType, from, msg);
+            CenterMessager.Instance.SendMessage(from, "hhhhhhha");
         }
         private static void InitNetWork()
         {

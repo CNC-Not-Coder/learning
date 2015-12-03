@@ -5,13 +5,6 @@ using WebSocket4Net;
 
 namespace CenterApi
 {
-    public enum NodeType
-    {
-        Invalid = -1,
-        Lobby = 0,
-        ClientNode = 1,
-        RoomServer = 2,
-    }
     /// <summary>
     /// 提供通用的通信接口，包括发送消息和接收消息
     /// </summary>
@@ -19,7 +12,7 @@ namespace CenterApi
     {
         public static CenterMessager Instance = new CenterMessager();
 
-        public delegate void OnMessageDelegate(NodeType nodeType, string from, string msg);
+        public delegate void OnMessageDelegate(int nodeType, string from, string msg);
         public delegate void LogHandlerDelegate(string format, params object[] p);
 
         public OnMessageDelegate OnMessage = null;
@@ -28,7 +21,7 @@ namespace CenterApi
         private WebSocket mWebSocket = null;
         private bool mIsRunning = false;
         private string mNodeName = string.Empty;
-        private NodeType mNodeType = NodeType.Invalid;
+        private int mNodeType = -1;
         private string mIp = string.Empty;
         private int mPort = 0;
 
@@ -43,7 +36,7 @@ namespace CenterApi
         class MessageData
         {
             public MessageType MsgType = MessageType.Invalid;
-            public NodeType NodeType = NodeType.Invalid;
+            public int NodeType = -1;
             public string From = string.Empty;
             public string To = string.Empty;
             public string Data = string.Empty;
@@ -60,7 +53,7 @@ namespace CenterApi
         /// <param name="centerPort">ServerCenter的端口</param>
         /// <param name="nodeName">本结点的名字，不能和别的结点重复</param>
         /// <param name="nodeType">本结点的类型，用于接收消息时区分发送者</param>
-        public void Init(string centerIp, int centerPort, string nodeName, NodeType nodeType, bool connectNow = true)
+        public void Init(string centerIp, int centerPort, string nodeName, int nodeType, bool connectNow = true)
         {
             if (string.IsNullOrEmpty(nodeName))
                 return;
@@ -86,11 +79,14 @@ namespace CenterApi
             mWebSocket.MessageReceived += new EventHandler<WebSocket4Net.MessageReceivedEventArgs>(websocket_MessageReceived);
             mWebSocket.DataReceived += new EventHandler<WebSocket4Net.DataReceivedEventArgs>(websocket_DataReceived);
             mWebSocket.Open();
+
+            if (LogHandler != null) LogHandler("Current nodeName : {0}", mNodeName);
         }
         public void ShutDown()
         {
             if (!mIsRunning)
                 return;
+            mIsRunning = false;
             //注销结点
             MessageData data = new MessageData();
             data.MsgType = MessageType.UnRegister;
@@ -101,7 +97,7 @@ namespace CenterApi
 
             mWebSocket.Send(BuildMessage(data));
 
-            mIsRunning = false;
+            mWebSocket.Close("Unregister!");
         }
         public bool IsRuning
         {
@@ -143,10 +139,10 @@ namespace CenterApi
                 string from = msgData.From;
                 string to = msgData.To;
                 string data = msgData.Data;
-                NodeType nodeType = msgData.NodeType;
+                int nodeType = msgData.NodeType;
                 if (to != mNodeName)
                     return;
-                if (string.IsNullOrEmpty(from) || string.IsNullOrEmpty(data) || nodeType == NodeType.Invalid)
+                if (string.IsNullOrEmpty(from) || string.IsNullOrEmpty(data))
                     return;
                 if (OnMessage != null) OnMessage(nodeType, from, data);
             }
@@ -186,7 +182,7 @@ namespace CenterApi
             json["type"] = (int)data.MsgType;
             json["from"] = data.From;
             json["to"] = data.To;
-            json["nodetype"] = (int)data.NodeType;
+            json["nodetype"] = data.NodeType;
             json["data"] = data.Data;
             return json.ToJson();
         }
@@ -201,7 +197,7 @@ namespace CenterApi
             if (json.Keys.Contains("to"))
                 rData.To = json["to"].ToString();
             if (json.Keys.Contains("nodetype") && json["nodetype"].IsInt)
-                rData.NodeType = (NodeType)Convert.ToInt32(json["nodetype"].ToString());
+                rData.NodeType = Convert.ToInt32(json["nodetype"].ToString());
             if (json.Keys.Contains("data"))
                 rData.Data = json["data"].ToString();
             return rData;

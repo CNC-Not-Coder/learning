@@ -8,7 +8,7 @@ var NodeType = {
 }
 var Message_Center_Port = 8000;
 var Message_Center_IP = "127.0.0.1";
-var MyNodeName = "clientnode1";
+var MyNodeName = "clientnode2";
 
 var messager = new CenterMessager();
 

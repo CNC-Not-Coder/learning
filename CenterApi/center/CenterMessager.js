@@ -31,7 +31,11 @@ function JsonStringify(jsonObj) {
 
 
 
-var CenterMessager = function CenterMessager(_centerIp, _centerPort, _nodeName, _nodeType)
+var CenterMessager = function CenterMessager(){};
+
+util.inherits(CenterMessager, EventEmitter);
+
+CenterMessager.prototype.init = function(_centerIp, _centerPort, _nodeName, _nodeType)
 {
 	this.running = false;
 	this.centerIp = _centerIp;
@@ -39,54 +43,85 @@ var CenterMessager = function CenterMessager(_centerIp, _centerPort, _nodeName, 
 	this.nodeName = _nodeName;
 	this.nodeType = _nodeType;
 	this.socketClient = new WebSocketClient();
-	
+}
+
+CenterMessager.prototype.connect = function()
+{
+	var messger = this;
 	this.socketClient.on("connect", function(connection){
-		this.socketConnetion = connection;
+		
+		messger.socketConnetion = connection;
+		
 		connection.on('error', function(error) {
-			this.running = false;
+			messger.running = false;
 			console.log("Connection Error: " + error.toString());
 		});
+		
 		connection.on('close', function() {
-			this.running = false;
+			messger.running = false;
 			console.log('Connection Closed');
 		});
-		connection.on('message', function(message) {
-			if (message.type === 'utf8') {
-				console.log("Received: '" + message.utf8Data + "'");
-				var jsonObj = JsonParse(message);
+		
+		connection.on('message', function(msg) {
+			if (msg.type === 'utf8') {
+				var jsonObj = JsonParse(msg.utf8Data);
 				if(!jsonObj) return;
-				if(this.running)
+				if(messger.running)
 				{//normal message
-					if(jsonObj.to != this.nodeName) return;
-					if(!jsonObj.from || !jsonObj.data || jsonObj.nodetype) return;
-					this.emit('onmessage', jsonObj.nodetype, jsonObj.from, jsonObj.data);
+					if(jsonObj.to != messger.nodeName) return;
+					if(!jsonObj.from || !jsonObj.data) return;
+					
+					messger.emit('onmessage', jsonObj.nodetype, jsonObj.from, jsonObj.data);
 				}
 				else
 				{//register callback
-					if(jsonObj.nodetype == MessageType.Register && jsonObj.data == "succeed")
+					if(jsonObj.type == MessageType.Register && jsonObj.data == "succeed")
 					{
-						this.running = true;
-						console.log("Register node[" + this.nodeName +"] succeed!");
+						messger.running = true;
+						console.log("Register node[" + messger.nodeName +"] succeed!");
 					}
 				}
 			}
 		});
+		//Register
+		var jsonObj = {};
+		jsonObj.type = MessageType.Register;
+		jsonObj.from = messger.nodeName;
+		jsonObj.to = "Center";
+		jsonObj.nodetype = messger.nodeType;
+		jsonObj.data = "";
+		connection.send(JsonStringify(jsonObj));
 	});
 	this.socketClient.on('connectFailed', function(error) {
-		this.running = false;
+		messger.running = false;
 		console.log('Connect Error: ' + error.toString());
 	});
-}
-
-CenterMessager.prototype.connect()
-{
+	
 	var uri = "ws://" + this.centerIp + ":" + this.centerPort;
 	this.socketClient.connect(uri, "servercenter");
+	
+	console.log("current nodeName : " + this.nodeName);
 }
 
-util.inherits(CenterMessager, EventEmitter);
+CenterMessager.prototype.shutDown = function()
+{
+	this.running = false;
+	
+	//UnRegister
+	var jsonObj = {};
+	jsonObj.type = MessageType.UnRegister;
+	jsonObj.from = this.nodeName;
+	jsonObj.to = "Center";
+	jsonObj.nodetype = this.nodeType;
+	jsonObj.data = "";
+	
+	if(this.socketConnetion && this.socketConnetion.connected)
+	{
+		this.socketConnetion.send(JsonStringify(jsonObj));
+	}
+}
 
-CenterMessager.prototype.sendMessage(destName, msg)
+CenterMessager.prototype.sendMessage = function(destName, msg)
 {
 	if(!this.running) return;
 	

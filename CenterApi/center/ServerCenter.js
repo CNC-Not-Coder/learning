@@ -61,14 +61,20 @@ webServer.on("connect", function(connection){
 			}
 			if(recv.type == MessageType.Message)
 			{//正常消息
+				if(!recv.to) return;
 				var _connection = node2socket.getValue(recv.to);
 				if(_connection)
 				{
 					_connection.send(msg.utf8Data);//仅仅转发消息
 				}
+				else
+				{
+					node2socket.remove(recv.to);
+				}
 			}
 			else if(recv.type == MessageType.Register)
 			{//注册结点，如果已经注册过了，则替换
+				if(!recv.from) return;
 				if(node2socket.containsKey(recv.from))
 					node2socket.remove(recv.from);
 				node2socket.add(recv.from, connection);
@@ -83,6 +89,7 @@ webServer.on("connect", function(connection){
 			}
 			else if(recv.type == MessageType.UnRegister)
 			{//注销结点
+				if(!recv.from) return;
 				node2socket.remove(recv.from);
 				console.log("UnRegister node[" + recv.from + "] succeed!");
 			}
