@@ -60,7 +60,7 @@ namespace CenterApi
         /// <param name="centerPort">ServerCenter的端口</param>
         /// <param name="nodeName">本结点的名字，不能和别的结点重复</param>
         /// <param name="nodeType">本结点的类型，用于接收消息时区分发送者</param>
-        public void Init(string centerIp, int centerPort, string nodeName, NodeType nodeType)
+        public void Init(string centerIp, int centerPort, string nodeName, NodeType nodeType, bool connectNow = true)
         {
             if (string.IsNullOrEmpty(nodeName))
                 return;
@@ -70,11 +70,13 @@ namespace CenterApi
             mPort = centerPort;
             mNodeName = nodeName;
             mNodeType = nodeType;
-            Connect();
+
+            if(connectNow) Connect();
         }
-        private void Connect()
+        public void Connect()
         {
             mWebSocket = null;
+            mIsRunning = false;
 
             string uri = string.Format("ws://{0}:{1}", mIp, mPort);
             mWebSocket = new WebSocket4Net.WebSocket(uri, subProtocol: "servercenter");
@@ -84,6 +86,22 @@ namespace CenterApi
             mWebSocket.MessageReceived += new EventHandler<WebSocket4Net.MessageReceivedEventArgs>(websocket_MessageReceived);
             mWebSocket.DataReceived += new EventHandler<WebSocket4Net.DataReceivedEventArgs>(websocket_DataReceived);
             mWebSocket.Open();
+        }
+        public void ShutDown()
+        {
+            if (!mIsRunning)
+                return;
+            //注销结点
+            MessageData data = new MessageData();
+            data.MsgType = MessageType.UnRegister;
+            data.NodeType = mNodeType;
+            data.From = mNodeName;
+            data.To = "Center";
+            data.Data = string.Empty;
+
+            mWebSocket.Send(BuildMessage(data));
+
+            mIsRunning = false;
         }
         public bool IsRuning
         {
@@ -188,14 +206,5 @@ namespace CenterApi
                 rData.Data = json["data"].ToString();
             return rData;
         }
-        //public void SendMessage(string destName, byte[] data, int offset, int length)
-        //{
-        //    if (!mIsRunning)
-        //        return;
-        //    if (data == null || data.Length < length)
-        //        return;
-        //    string sendStr = Convert.ToBase64String(data, offset, length);
-        //    SendMessage(destName, sendStr);
-        //}
     }
 }

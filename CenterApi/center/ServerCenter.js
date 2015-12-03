@@ -42,20 +42,6 @@ function JsonStringify(jsonObj) {
   }
   return null;
 }
-/*
-function MsgParse(jsonStr){
-	var jsonObj = JsonParse(jsonStr);
-	if(jsonObj == null)
-		return null;
-	var result = {};
-	result.msgtype = jsonObj["type"];
-	result.from = jsonObj["from"];
-	result.to = jsonObj["to"];
-	result.nodetype = jsonObj["nodetype"];
-	result.data = jsonObj["data"];
-	return result;
-}
-*/
 
 webServer.on("request", function(request){
 	var connection = request.accept("servercenter", request.origin);	
@@ -70,13 +56,13 @@ webServer.on("connect", function(connection){
 			console.log(msg.utf8Data);
 		
 			var recv = JsonParse(msg.utf8Data);
-			if(recv == null){
+			if(!recv){
 				return;
 			}
 			if(recv.type == MessageType.Message)
 			{//正常消息
 				var _connection = node2socket.getValue(recv.to);
-				if(_connection != null)
+				if(_connection)
 				{
 					_connection.send(msg.utf8Data);//仅仅转发消息
 				}

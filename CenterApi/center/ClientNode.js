@@ -1,35 +1,32 @@
-var WebSocketClient = require('websocket').client;
 
-var client = new WebSocketClient();
-var Client_Listen_Port = 9001;
+var CenterMessager = require("./CenterMessager");
+
+var NodeType = {
+	Invalid : -1,
+    Lobby : 0,
+    ClientNode : 1,
+    RoomServer : 2,
+}
+
 var Message_Center_Port = 8000;
+var Message_Center_IP = "127.0.0.1";
+var MyNodeName = "clientnode1";
 
-client.on('connectFailed', function(error) {
-    console.log('Connect Error: ' + error.toString());
+var messager = new CenterMessager(Message_Center_IP, Message_Center_Port, MyNodeName, NodeType.ClientNode);
+
+messager.on("onmessage", function(nodetype, from, msg){
+	
+	console.log("onmessage: " + nodetype + from + msg);
 });
 
-client.on('connect', function(connection) {
-    console.log('WebSocket Client Connected');
-    connection.on('error', function(error) {
-        console.log("Connection Error: " + error.toString());
-    });
-    connection.on('close', function() {
-        console.log('echo-protocol Connection Closed');
-    });
-    connection.on('message', function(message) {
-        if (message.type === 'utf8') {
-            console.log("Received: '" + message.utf8Data + "'");
-        }
-    });
+function sendNumber() {
+	if (messager.running) {
+		var number = Math.round(Math.random() * 0xFFFFFF);
+		messager.sendMessage(number.toString());
+		setTimeout(sendNumber, 1000);
+	}
+}
 
-    function sendNumber() {
-        if (connection.connected) {
-            var number = Math.round(Math.random() * 0xFFFFFF);
-            connection.sendUTF(number.toString());
-            setTimeout(sendNumber, 1000);
-        }
-    }
-    sendNumber();
-});
+sendNumber();
 
-client.connect('ws://localhost:8000/', "servercenter");
+
