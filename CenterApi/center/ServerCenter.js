@@ -1,9 +1,8 @@
 
 var http = require("http");
-var url = require("url");
-var util = require("util");
-var events = require("events");
 var hash = require("./hash");
+var config = require("./CenterConfig");
+var webSocket = require("websocket").server;
 
 console.log("Server Center Starting ...");
 
@@ -16,7 +15,8 @@ var MessageType = {
     UnRegister : 2,
 };
 
-var webSocket = require("websocket").server;
+if(config) Message_Center_Port = config.listenPort;
+
 var server = new http.Server().listen(Message_Center_Port);
 
 var webServer = new webSocket({
@@ -109,3 +109,5 @@ process.on('uncaughtException', function (err) {
 console.log('Caught exception: ' + err);
 });
 
+console.log("Done.");
+console.log("Running at port : " + Message_Center_Port);

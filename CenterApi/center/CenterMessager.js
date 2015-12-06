@@ -3,7 +3,6 @@ var util = require('util');
 var EventEmitter = require('events').EventEmitter;
 var WebSocketClient = require('websocket').client;
 
-var Message_Center_Port = 8000;
 var MessageType = {
 	Invalid : -1,
     Register : 0,
