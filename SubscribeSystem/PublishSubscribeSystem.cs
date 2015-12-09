@@ -12,7 +12,7 @@ namespace SubscribeSystem
     public sealed class PublishSubscribeSystem
     {
         private Dictionary<string, Delegate> subscribers_ = new Dictionary<string, Delegate>();
-        private delegate void LogHandlerDelegate(string format, params object[] ps);
+        public delegate void LogHandlerDelegate(string format, params object[] ps);
         private class ReceiptInfo
         {
             public string name_;
