@@ -1,6 +1,7 @@
 ﻿using CenterApi;
 using Excel;
 using Google.Protobuf;
+using SubscribeSystem;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -15,6 +16,8 @@ namespace MyTest
     {
         static WebSocket4Net.WebSocket mSocketClient = null;
         static MyTaskDispatcher mTaskDispatcher = null;
+        static MyThread mThread = null;
+        static PublishSubscribeSystem mEventSystem = null;
         static void Main(string[] args)
         {
             //GenerateTable();
@@ -31,12 +34,47 @@ namespace MyTest
 
             //TestCenterApi();
 
-            InitThread();
+            //InitThread();
+
+            RegisterEvent();
+            FireEvent();
+
+            Console.ReadKey(true);
         }
-        public static void InitThread()
+        private static void RegisterEvent()
         {
+            //Init 
+            PublishSubscribeSystem.LogErrorHandler = Console.WriteLine;
+            PublishSubscribeSystem.LogInfoHandler = Console.WriteLine;
+
+            mEventSystem = new PublishSubscribeSystem();
+            mEventSystem.Subscribe<string>("print_to_console", "ui", PrintToConsole);
+        }
+        private static void PrintToConsole(string text)
+        {
+            Console.WriteLine(text);
+        }
+
+        private static void FireEvent()
+        {
+            mEventSystem.Publish("print_to_console", "ui", "Hello ! ");
+        }
+
+        private static void InitThread()
+        {
+            //delegate 
+            MyThread.LogErrorHandler = Console.WriteLine;
+            DelayActionProcessor.LogErrorHandler = Console.WriteLine;
+            DelayActionProcessor.LogInfoHandler = Console.WriteLine;
+
             mTaskDispatcher = new MyTaskDispatcher(3, true);
             mTaskDispatcher.DispatchAction(TestThread, "this is a param!");
+
+            mThread = new MyThread();
+            mThread.Start();
+            mThread.QueueAction(TestThread, "this is a param!");
+
+            //thread.Stop();
         }
         private static void TestThread(string param)
         {

@@ -27,11 +27,11 @@ namespace SubscribeSystem
         /// <summary>
         /// 这个委托需要注册者保证在本线程正确执行
         /// </summary>
-        public LogHandlerDelegate LogInfoHandler = null;
+        public static LogHandlerDelegate LogInfoHandler = null;
         /// <summary>
         /// 这个委托需要注册者保证在本线程正确执行
         /// </summary>
-        public LogHandlerDelegate LogErrorHandler = null;
+        public static LogHandlerDelegate LogErrorHandler = null;
 
         public object Subscribe(string ev_name, string group, MyAction subscriber) { return AddSubscriber(ev_name, group, subscriber); }
         public object Subscribe<T0>(string ev_name, string group, MyAction<T0> subscriber) { return AddSubscriber(ev_name, group, subscriber); }
