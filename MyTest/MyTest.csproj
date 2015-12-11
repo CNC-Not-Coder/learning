@@ -73,6 +73,10 @@
       <Project>{6e097a30-3aa3-4ec1-afe2-e54bf2ccc887}</Project>
       <Name>CenterApi</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TaskDispatcher\TaskDispatcher.csproj">
+      <Project>{98d1f3d2-bd80-4bc2-a39d-97a1a26c1e13}</Project>
+      <Name>TaskDispatcher</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

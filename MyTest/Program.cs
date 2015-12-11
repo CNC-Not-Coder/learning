@@ -7,12 +7,14 @@ using System.Data;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using TaskDispatcher;
 
 namespace MyTest
 {
     class Program
     {
         static WebSocket4Net.WebSocket mSocketClient = null;
+        static MyTaskDispatcher mTaskDispatcher = null;
         static void Main(string[] args)
         {
             //GenerateTable();
@@ -27,7 +29,18 @@ namespace MyTest
 
             //TestNetwork();
 
-            TestCenterApi();
+            //TestCenterApi();
+
+            InitThread();
+        }
+        public static void InitThread()
+        {
+            mTaskDispatcher = new MyTaskDispatcher(3, true);
+            mTaskDispatcher.DispatchAction(TestThread, "this is a param!");
+        }
+        private static void TestThread(string param)
+        {
+            Console.WriteLine(param);
         }
         public enum NodeType
         {
