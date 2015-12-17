@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SubscribeSystem", "Subscrib
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaskDispatcher", "TaskDispatcher\TaskDispatcher.csproj", "{98D1F3D2-BD80-4BC2-A39D-97A1A26C1E13}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkillFramework", "SkillFramework\SkillFramework.csproj", "{02DC57B8-EA0A-4898-BE78-00D0FCFD6583}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{98D1F3D2-BD80-4BC2-A39D-97A1A26C1E13}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{98D1F3D2-BD80-4BC2-A39D-97A1A26C1E13}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{98D1F3D2-BD80-4BC2-A39D-97A1A26C1E13}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02DC57B8-EA0A-4898-BE78-00D0FCFD6583}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02DC57B8-EA0A-4898-BE78-00D0FCFD6583}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02DC57B8-EA0A-4898-BE78-00D0FCFD6583}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02DC57B8-EA0A-4898-BE78-00D0FCFD6583}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
