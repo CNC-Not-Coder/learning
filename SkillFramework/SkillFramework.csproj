@@ -37,8 +37,12 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="UnityEngine">
+      <HintPath>lib\UnityEngine.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClientModule\GfxSystem.cs" />
     <Compile Include="Framework\ISkillTriger.cs" />
     <Compile Include="Framework\ISkillTrigerFactory.cs" />
     <Compile Include="Framework\Logger.cs" />
