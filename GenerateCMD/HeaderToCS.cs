@@ -76,7 +76,7 @@ namespace GenerateCMD
                 propertyParsers += strParser + "\r\n\t\t\t";
             }
             string tableName = Path.GetFileNameWithoutExtension(tableRelativePath);
-            string strLoader = string.Format("LoadData({0}Data.Instance, \"{1}\");\r\n\t\t\t", tableName, tableRelativePath);
+            string strLoader = string.Format("LoadData({0}Provider.Instance, \"{1}\");\r\n\t\t\t", tableName, tableRelativePath);
 
             OutputToCSBuffer(tableName, firstCol, propertyDeclares, propertyParsers, strLoader);
         }
@@ -110,6 +110,7 @@ namespace GenerateCMD
                 case "int": def = "-1"; break;
                 case "float": def = "0f"; break;
                 case "string": def = "string.Empty"; break;
+                case "bool": def = "false"; break;
                 default: throw new Exception("Unsupported Type " + t);
             }
             return def;
@@ -122,7 +123,7 @@ namespace GenerateCMD
             tableTemplate = tableTemplate.Replace("@{Declares}", declares);
             tableTemplate = tableTemplate.Replace("@{FirstCol}", firstColName);
             tableTemplate = tableTemplate.Replace("@{Parsers}", parsers);
-            tableTemplate = tableTemplate.Replace("@{TableProviderName}", string.Format("{0}Data", tableName));
+            tableTemplate = tableTemplate.Replace("@{TableProviderName}", string.Format("{0}Provider", tableName));
 
             tableOutput.Append(tableTemplate);
             loaderOutput.Append(loader);

@@ -25,7 +25,7 @@ namespace MyNamespace
             return Id;
         }
     }
-    public class configData : DataInstance<config> { }
+    public class configProvider : DataInstance<config> { }
     
     public class Equip : IDataUnit
     {
@@ -35,6 +35,7 @@ namespace MyNamespace
 		public int Hp;
 		public int Mp;
 		public List<int> ItemList;
+		public bool IsPerfect;
 		
         public void Load(MyDataRow row)
         {
@@ -44,6 +45,7 @@ namespace MyNamespace
 			Hp = DataParser.Parse<int>(row, "Hp", -1);
 			Mp = DataParser.Parse<int>(row, "Mp", -1);
 			ItemList = DataParser.ParseList<int>(row, "Item", -1);
+			IsPerfect = DataParser.Parse<bool>(row, "IsPerfect", false);
 			
         }
         public int GetId()
@@ -51,7 +53,7 @@ namespace MyNamespace
             return Id;
         }
     }
-    public class EquipData : DataInstance<Equip> { }
+    public class EquipProvider : DataInstance<Equip> { }
     
     public class weapons : IDataUnit
     {
@@ -79,7 +81,7 @@ namespace MyNamespace
             return Id;
         }
     }
-    public class weaponsData : DataInstance<weapons> { }
+    public class weaponsProvider : DataInstance<weapons> { }
     
     public class S_10001 : IDataUnit
     {
@@ -99,16 +101,16 @@ namespace MyNamespace
             return Id;
         }
     }
-    public class S_10001Data : DataInstance<S_10001> { }
+    public class S_10001Provider : DataInstance<S_10001> { }
     
     public partial class DataProvider
     {
         private void LoadAllData()
         {
-            LoadData(configData.Instance, "config.txt");
-			LoadData(EquipData.Instance, "Equip.txt");
-			LoadData(weaponsData.Instance, "weapons.txt");
-			LoadData(S_10001Data.Instance, "Scenes/S_10001.txt");
+            LoadData(configProvider.Instance, "config.txt");
+			LoadData(EquipProvider.Instance, "Equip.txt");
+			LoadData(weaponsProvider.Instance, "weapons.txt");
+			LoadData(S_10001Provider.Instance, "Scenes/S_10001.txt");
 			
         }
     }
