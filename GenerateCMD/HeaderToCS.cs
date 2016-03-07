@@ -109,7 +109,14 @@ namespace GenerateCMD
                 string configDef = defVal[index];
                 if (!string.IsNullOrEmpty(configDef))
                 {
-                    return configDef;
+                    if(t == "string")
+                    {
+                        return "\"" + configDef + "\"";
+                    }
+                    else
+                    {
+                        return configDef.ToLower();
+                    }
                 }
             }
             return GetDefaultVal(t);
