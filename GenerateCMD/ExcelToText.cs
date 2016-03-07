@@ -11,7 +11,7 @@ namespace GenerateCMD
     public class ExcelToText
     {
         public static ExcelToText Instance = new ExcelToText();
-        public delegate void ParseCompleteDelegate(string tableRelativePath, List<string> header, List<string> types);//<列名, 类型>
+        public delegate void ParseCompleteDelegate(string tableRelativePath, List<string> header, List<string> types, List<string> defVal);//<列名, 类型>
         public string SrcRootPath { get; set; }
         public string DestRootPath { get; set; }
         private Queue<Tuple<string, string, ParseCompleteDelegate>> mTasks = new Queue<Tuple<string, string, ParseCompleteDelegate>>();
@@ -100,15 +100,28 @@ namespace GenerateCMD
             int col = table.Columns.Count;
             if (row < 2 || col < 1)
                 return false;
-            List<string> header = new List<string>();
-            List<string> types = new List<string>();
+            List<string> header = new List<string>();//第一行
+            List<string> types = new List<string>();//第二行
+            List<string> defVal = new List<string>();//第三行
             StringBuilder txtContent = new StringBuilder();
             for (int i = 0; i < row; i++)
             {
+                bool isDef = false;
                 if(i == 1)
-                {//注释第二行的类型
+                {//注释第2行的类型
                     txtContent.Append("#");
                 }
+                else if(i == 2)
+                {//注释第3行的默认值
+                    string firstCol = table.Rows[i][0].ToString();
+                    if(firstCol.StartsWith("Def:", StringComparison.OrdinalIgnoreCase))
+                    {
+                        isDef = true;
+                        txtContent.Append("#");
+                        table.Rows[i][0] = firstCol.Replace("Def:", "");
+                    }
+                }
+
                 for (int j = 0; j < col; j++)
                 {
                     if(j < col - 1)
@@ -126,6 +139,14 @@ namespace GenerateCMD
                     else if(i == 1)
                     {
                         types.Add(table.Rows[i][j].ToString());
+                    }
+                    else if(i == 2)
+                    {
+                        if(isDef)
+                        {
+                            string def = table.Rows[i][j].ToString();
+                            defVal.Add(def);
+                        }
                     }
                 }
                 txtContent.Append("\n");
@@ -157,7 +178,7 @@ namespace GenerateCMD
             stream.Dispose();
 
             if(callBack != null)
-                callBack(destRelativeFile, header, types);
+                callBack(destRelativeFile, header, types, defVal);
 
             return true;
         }

@@ -38,7 +38,7 @@ namespace GenerateCMD
             string tableTemplate = template.Substring(indexBeg + begFlag.Length, indexEnd - indexBeg - endFlag.Length);
             mTableTemplate = tableTemplate;
         }
-        public void GenerateCS(string tableRelativePath, List<string> header, List<string> types)
+        public void GenerateCS(string tableRelativePath, List<string> header, List<string> types, List<string> defVal)
         {
             if (header == null || types == null)
                 return;
@@ -65,12 +65,12 @@ namespace GenerateCMD
                     string prefix = GetPrefixAndMarkColumnDisable(header, i);
                     string fieldName = string.Format("{0}List", prefix);
                     strDeclare = string.Format("public List<{0}> {1};", typeOfField, fieldName);
-                    strParser = string.Format("{0} = DataParser.ParseList<{1}>(row, \"{2}\", {3});", fieldName, typeOfField, prefix, GetDefaultVal(typeOfField));
+                    strParser = string.Format("{0} = DataParser.ParseList<{1}>(row, \"{2}\", {3});", fieldName, typeOfField, prefix, GetDefaultVal(i, defVal, typeOfField));
                 }
                 else
                 {//仅读取这一列
                     strDeclare = string.Format("public {0} {1};", typeOfField, colName);
-                    strParser = string.Format("{0} = DataParser.Parse<{1}>(row, \"{2}\", {3});", colName, typeOfField, colName, GetDefaultVal(typeOfField));
+                    strParser = string.Format("{0} = DataParser.Parse<{1}>(row, \"{2}\", {3});", colName, typeOfField, colName, GetDefaultVal(i, defVal, typeOfField));
                 }
                 propertyDeclares += strDeclare + "\r\n\t\t" ;
                 propertyParsers += strParser + "\r\n\t\t\t";
@@ -101,6 +101,18 @@ namespace GenerateCMD
         {
             //Item0,Item1,Item2, 非数字+数字的组合
             return Regex.IsMatch(colName, @"^\D+\d+$");
+        }
+        private string GetDefaultVal(int index, List<string> defVal, string t)
+        {
+            if(index < defVal.Count)
+            {
+                string configDef = defVal[index];
+                if (!string.IsNullOrEmpty(configDef))
+                {
+                    return configDef;
+                }
+            }
+            return GetDefaultVal(t);
         }
         private string GetDefaultVal(string t)
         {
